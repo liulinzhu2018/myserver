@@ -62,7 +62,9 @@ class Shortener(http.server.BaseHTTPRequestHandler):
         # A GET request will either be for / (the root path) or for /some-name.
         # Strip off the / and we have either empty string or a name.
         name = unquote(self.path[1:])
-        get_posts()
+        
+        for text, date in get_posts():
+            memory[text] = date
 
         if name:
             if name in memory:
