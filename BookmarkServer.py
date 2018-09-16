@@ -6,6 +6,18 @@ import http.server
 import requests
 import os
 from urllib.parse import unquote, parse_qs
+import psycopg2
+
+DATABASE_URL = os.environ['DATABASE_URL']
+def get_posts():
+    """Return all posts from the 'database', most recent first."""
+    #db = psycopg2.connect(database=DBNAME, user='postgres')
+    db = psycopg2.connect(DATABASE_URL, sslmode='require')
+    c = db.cursor()
+    c.execute("select content, time from posts order by time desc")
+    posts = c.fetchall()
+    db.close()
+    return posts
 
 memory = {}
 
@@ -50,6 +62,7 @@ class Shortener(http.server.BaseHTTPRequestHandler):
         # A GET request will either be for / (the root path) or for /some-name.
         # Strip off the / and we have either empty string or a name.
         name = unquote(self.path[1:])
+        get_posts()
 
         if name:
             if name in memory:
