@@ -32,7 +32,7 @@ HTML_WRAP = '''\
       <div><button id="go" type="submit">Post message</button></div>
     </form>
     <!-- post content will go here -->
-%s
+<!-- %s -->
   </body>
 </html>
 '''
@@ -46,8 +46,9 @@ POST = '''\
 @app.route('/', methods=['GET'])
 def main():
   '''Main page of the forum.'''
-  posts = "".join(POST % (date, text) for text, date in get_posts())
-  html = HTML_WRAP % posts
+  #posts = "".join(POST % (date, text) for text, date in get_posts())
+  #html = HTML_WRAP % posts
+  html = HTML_WRAP
   return html
 
 
